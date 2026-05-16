@@ -64,3 +64,55 @@ function makeLink(href, label) {
 }
 
 loadTracks();
+
+const player = document.getElementById("player");
+let currentRow = null;
+let rafId = null;
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".track-play");
+  if (!btn) return;
+  const row = btn.closest(".track");
+  const file = row.dataset.file;
+  if (!file) return;
+
+  if (currentRow === row && !player.paused) {
+    stopPlayback();
+    return;
+  }
+
+  stopPlayback();
+  currentRow = row;
+  player.src = file;
+  player.play();
+  btn.textContent = "[ Stop ]";
+  btn.setAttribute("aria-pressed", "true");
+  tickProgress();
+});
+
+player.addEventListener("ended", stopPlayback);
+
+function stopPlayback() {
+  if (!currentRow) return;
+  const btn = currentRow.querySelector(".track-play");
+  const progress = currentRow.querySelector(".track-progress");
+  btn.textContent = "[ Play ]";
+  btn.setAttribute("aria-pressed", "false");
+  progress.style.width = "0";
+  progress.setAttribute("aria-valuenow", "0");
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  currentRow = null;
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
+}
+
+function tickProgress() {
+  if (!currentRow) return;
+  const progress = currentRow.querySelector(".track-progress");
+  const pct = player.duration ? (player.currentTime / player.duration) * 100 : 0;
+  progress.style.width = pct + "%";
+  progress.setAttribute("aria-valuenow", String(Math.round(pct)));
+  rafId = requestAnimationFrame(tickProgress);
+}
