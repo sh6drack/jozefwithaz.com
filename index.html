@@ -49,6 +49,23 @@
       </p>
     </section>
 
+    <section id="notify">
+      <h2>Notify on release</h2>
+      <form id="notify-form" novalidate>
+        <label for="notify-email" class="visually-hidden">Email</label>
+        <input
+          id="notify-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="you@email.com"
+        />
+        <button type="submit">[ Notify me ]</button>
+        <p id="notify-status" class="muted" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
     <section id="contact">
       <h2>Contact</h2>
       <p>

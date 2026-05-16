@@ -119,3 +119,32 @@ function tickProgress() {
 
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+const form = document.getElementById("notify-form");
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = document.getElementById("notify-status");
+    const email = form.elements.email.value.trim();
+    if (!email) {
+      status.textContent = "Enter an email.";
+      return;
+    }
+    status.textContent = "Sending...";
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      if (!res.ok) throw new Error("bad response");
+      while (form.firstChild) form.removeChild(form.firstChild);
+      const msg = document.createElement("p");
+      msg.className = "muted";
+      msg.textContent = "Saved. We will let you know when The Range drops.";
+      form.appendChild(msg);
+    } catch {
+      status.textContent = "Something went wrong. Try again.";
+    }
+  });
+}
