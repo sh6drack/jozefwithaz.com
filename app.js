@@ -116,3 +116,6 @@ function tickProgress() {
   progress.setAttribute("aria-valuenow", String(Math.round(pct)));
   rafId = requestAnimationFrame(tickProgress);
 }
+
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = String(new Date().getFullYear());

@@ -135,3 +135,14 @@ section > h2 {
   .track-play { grid-area: play; justify-self: start; }
   .track-link { display: inline; }
 }
+
+.muted { opacity: 0.5; }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  opacity: 0.4;
+  font-size: 0.75rem;
+}
+.site-footer p { margin: 0; }
